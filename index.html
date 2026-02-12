@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalkulator Saham Pro</title>
-    <link rel="icon" href="ico/ccnn.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom scrollbar agar lebih rapi */
+        /* Custom scrollbar */
         body::-webkit-scrollbar { width: 8px; }
         body::-webkit-scrollbar-track { background: #1f2937; }
         body::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
@@ -18,13 +17,13 @@
     <div class="max-w-2xl mx-auto space-y-6">
         
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-emerald-400">📈 Kalkulator Average Price</h1>
-            <p class="text-gray-400 text-sm mt-2">Hitung Average Down/Up & Simulasi Profit</p>
+            <h1 class="text-3xl font-bold text-emerald-400">📈 Kalkulator Saham Pro</h1>
+            <p class="text-gray-400 text-sm mt-2">Hitung Average Down, Target Price & Money Management</p>
         </div>
 
         <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
             <h2 class="text-xl font-semibold mb-4 text-blue-400 flex items-center">
-                <span>1. Posisi Saat Ini</span>
+                <span>1. Posisi Saat Ini (Portofolio)</span>
             </h2>
             <div class="grid grid-cols-2 gap-4">
                 <div>
@@ -42,12 +41,12 @@
 
         <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
             <h2 class="text-xl font-semibold mb-4 text-yellow-400 flex items-center">
-                <span>2. Tambah Muatan (Buy Action)</span>
+                <span>2. Tambah Muatan (Cek Average Baru)</span>
             </h2>
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">Harga Beli Baru</label>
-                    <input type="number" id="buyPrice" placeholder="Misal: 80" 
+                    <input type="number" id="buyPrice" placeholder="Harga Pasar" 
                         class="w-full bg-gray-700 border border-gray-600 rounded p-2 focus:outline-none focus:border-emerald-500 transition">
                 </div>
                 <div>
@@ -56,23 +55,55 @@
                         class="w-full bg-gray-700 border border-gray-600 rounded p-2 focus:outline-none focus:border-emerald-500 transition">
                 </div>
             </div>
+            
+            <div class="mt-4 bg-gray-900/50 p-4 rounded-lg border border-gray-600 text-center">
+                <p class="text-gray-400 text-xs uppercase tracking-wider">New Average Price</p>
+                <div class="text-2xl font-mono font-bold text-yellow-300 mt-1" id="resultAvg">Rp 0</div>
+                <div class="text-gray-500 text-xs mt-1">
+                    Total Lot: <span id="resultTotalLot">0</span> | Value: <span id="resultTotalValue">Rp 0</span>
+                </div>
+            </div>
         </div>
 
-        <div class="bg-emerald-900/30 p-6 rounded-xl border border-emerald-500/50 text-center relative overflow-hidden">
-            <div class="relative z-10">
-                <p class="text-emerald-400 text-sm font-bold tracking-wider uppercase">New Average Price</p>
-                <div class="text-4xl font-mono font-bold text-white mt-2" id="resultAvg">Rp 0</div>
-                <div class="text-gray-400 text-sm mt-2">
-                    Total Lot Baru: <span id="resultTotalLot" class="text-white font-bold">0</span> | 
-                    Total Value: <span id="resultTotalValue" class="text-white font-bold">Rp 0</span>
+        <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-orange-500/30">
+            <h2 class="text-xl font-semibold mb-4 text-orange-400 flex items-center justify-between">
+                <span>3. Target Average (Butuh Berapa Lot?)</span>
+                <span class="text-xs bg-orange-500/20 text-orange-300 px-2 py-1 rounded">New Feature</span>
+            </h2>
+            <p class="text-xs text-gray-400 mb-4">
+                Input harga pasar sekarang & target average yang diinginkan. Sistem akan menghitung berapa lot yang harus dibeli.
+            </p>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Harga Pasar Sekarang</label>
+                    <input type="number" id="marketPriceForTarget" placeholder="Misal: 50" 
+                        class="w-full bg-gray-700 border border-gray-600 rounded p-2 focus:outline-none focus:border-orange-500 transition">
                 </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Ingin Average Jadi</label>
+                    <input type="number" id="desiredAvg" placeholder="Misal: 75" 
+                        class="w-full bg-gray-700 border border-gray-600 rounded p-2 focus:outline-none focus:border-orange-500 transition">
+                </div>
+            </div>
+
+            <div class="bg-orange-900/20 p-4 rounded-lg border border-orange-500/30 text-center relative">
+                <div class="grid grid-cols-2 gap-4 divide-x divide-gray-700">
+                    <div>
+                        <p class="text-gray-400 text-xs">Kamu Perlu Beli</p>
+                        <div class="text-2xl font-bold text-white mt-1" id="lotNeeded">0 <span class="text-sm font-normal text-gray-400">Lot</span></div>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-xs">Modal Dibutuhkan</p>
+                        <div class="text-2xl font-bold text-green-400 mt-1" id="moneyNeeded">Rp 0</div>
+                    </div>
+                </div>
+                <p class="text-xs text-red-400 mt-2 hidden" id="targetErrorMsg">Target tidak mungkin dicapai (cek harga).</p>
             </div>
         </div>
 
         <hr class="border-gray-700 my-8">
 
         <div class="grid md:grid-cols-2 gap-6">
-            
             <div class="bg-gray-800 p-5 rounded-xl border border-gray-700">
                 <h3 class="font-semibold text-purple-400 mb-3">🎯 Target by Harga</h3>
                 <div class="space-y-3">
@@ -123,13 +154,18 @@
     </div>
 
     <script>
-        // Mengambil elemen-elemen input
-        const inputs = ['currentPrice', 'currentLot', 'buyPrice', 'buyLot', 'targetPriceInput', 'targetPercentInput'];
+        // List semua ID input
+        const inputIds = [
+            'currentPrice', 'currentLot', 
+            'buyPrice', 'buyLot', 
+            'marketPriceForTarget', 'desiredAvg', 
+            'targetPriceInput', 'targetPercentInput'
+        ];
+
+        // Element Cache
         const els = {};
-        
-        inputs.forEach(id => {
+        inputIds.forEach(id => {
             els[id] = document.getElementById(id);
-            // Tambahkan event listener agar hitung otomatis saat ngetik
             els[id].addEventListener('input', calculateAll);
         });
 
@@ -138,13 +174,16 @@
         }
 
         function calculateAll() {
-            // Ambil value, default ke 0 jika kosong
+            // --- AMBIL DATA UTAMA ---
             const curPrice = parseFloat(els.currentPrice.value) || 0;
             const curLot = parseFloat(els.currentLot.value) || 0;
+
+            // ==========================================
+            // 1. HITUNG AVERAGE BARU (MANUAL INPUT)
+            // ==========================================
             const buyPrice = parseFloat(els.buyPrice.value) || 0;
             const buyLot = parseFloat(els.buyLot.value) || 0;
 
-            // 1. Hitung Average Baru
             const totalLot = curLot + buyLot;
             let avgPrice = 0;
             let totalValue = 0;
@@ -156,18 +195,68 @@
                 avgPrice = totalValue / totalLot;
             }
 
-            // Update Tampilan Average
+            // Update UI Section 2
             document.getElementById('resultAvg').innerText = formatRupiah(avgPrice);
-            document.getElementById('resultTotalLot').innerText = totalLot + " Lot";
-            // Asumsi 1 Lot = 100 Lembar untuk valuasi rupiah total aset
+            document.getElementById('resultTotalLot').innerText = totalLot;
             document.getElementById('resultTotalValue').innerText = formatRupiah(totalValue * 100); 
 
-            // Base calculation variables (menggunakan Avg baru jika ada aksi beli, atau Avg lama jika tidak)
+
+            // ==========================================
+            // 2. HITUNG LOT UNTUK TARGET AVERAGE (FITUR BARU)
+            // ==========================================
+            const marketPriceTarget = parseFloat(els.marketPriceForTarget.value) || 0;
+            const desiredAvg = parseFloat(els.desiredAvg.value) || 0;
+            const errorMsg = document.getElementById('targetErrorMsg');
+            
+            let lotNeeded = 0;
+            let moneyNeeded = 0;
+
+            // Reset Error
+            errorMsg.classList.add('hidden');
+
+            if (curPrice > 0 && curLot > 0 && marketPriceTarget > 0 && desiredAvg > 0) {
+                // Logika Validasi: 
+                // Target Avg harus berada di ANTARA Avg Lama dan Harga Pasar.
+                // Jika tidak, mustahil tercapai (kecuali jual rugi/untung, tapi ini konteksnya beli/avg down/up).
+                const isPossible = (desiredAvg < curPrice && desiredAvg > marketPriceTarget) || 
+                                   (desiredAvg > curPrice && desiredAvg < marketPriceTarget);
+
+                if (isPossible) {
+                    // RUMUS: Lot Baru = Lot Lama * (Avg Lama - Target) / (Target - Harga Pasar)
+                    // Math.abs digunakan agar rumus berlaku baik untuk Avg Down maupun Avg Up
+                    const numerator = curLot * (curPrice - desiredAvg);
+                    const denominator = desiredAvg - marketPriceTarget;
+                    
+                    // Hasil floating point
+                    let rawLot = numerator / denominator;
+                    
+                    // Kita bulatkan ke atas (Ceil) karena tidak bisa beli 0.5 lot, 
+                    // dan agar average-nya minimal menyentuh atau lebih baik dari target.
+                    lotNeeded = Math.ceil(rawLot);
+                    
+                    // Hitung modal
+                    moneyNeeded = lotNeeded * marketPriceTarget * 100; // 100 lembar
+                } else {
+                    if(desiredAvg !== curPrice) { // Kalau sama persis gak perlu error, cuma 0 lot
+                        errorMsg.classList.remove('hidden');
+                        errorMsg.innerText = "Target tidak valid (Harus di antara Avg Awal & Harga Pasar)";
+                    }
+                }
+            }
+
+            document.getElementById('lotNeeded').innerText = lotNeeded.toLocaleString('id-ID');
+            document.getElementById('moneyNeeded').innerText = formatRupiah(moneyNeeded);
+
+
+            // ==========================================
+            // 3. SIMULASI PROFIT
+            // ==========================================
+            // Base calculation variables (menggunakan Avg baru jika ada aksi beli di Sec 2, atau Avg lama jika tidak)
             const basePrice = (totalLot > 0) ? avgPrice : curPrice;
             const baseLot = (totalLot > 0) ? totalLot : curLot;
             const lembar = baseLot * 100; 
 
-            // 2. Simulasi Target by Harga
+            // Target by Harga
             const targetPrice = parseFloat(els.targetPriceInput.value) || 0;
             if (basePrice > 0 && targetPrice > 0) {
                 const gainRp = (targetPrice - basePrice) * lembar;
@@ -176,12 +265,13 @@
                 document.getElementById('targetPricePercent').innerText = gainPercent.toFixed(2) + "%";
                 document.getElementById('targetPricePercent').className = gainPercent >= 0 ? "font-bold text-green-400" : "font-bold text-red-400";
                 document.getElementById('targetPriceValue').innerText = formatRupiah(gainRp);
+                document.getElementById('targetPriceValue').className = gainRp >= 0 ? "font-bold text-green-400" : "font-bold text-red-400";
             } else {
                 document.getElementById('targetPricePercent').innerText = "0%";
                 document.getElementById('targetPriceValue').innerText = "Rp 0";
             }
 
-            // 3. Simulasi Target by Persen
+            // Target by Persen
             const targetPercent = parseFloat(els.targetPercentInput.value) || 0;
             if (basePrice > 0 && targetPercent !== 0) {
                 const targetPriceRes = basePrice + (basePrice * (targetPercent / 100));
@@ -189,6 +279,7 @@
 
                 document.getElementById('targetPercentPrice').innerText = formatRupiah(targetPriceRes);
                 document.getElementById('targetPercentValue').innerText = formatRupiah(gainRpRes);
+                document.getElementById('targetPercentValue').className = gainRpRes >= 0 ? "font-bold text-green-400" : "font-bold text-red-400";
             } else {
                 document.getElementById('targetPercentPrice').innerText = "Rp 0";
                 document.getElementById('targetPercentValue').innerText = "Rp 0";
